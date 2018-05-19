@@ -1,0 +1,56 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost/event_store_service?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: choerodon
+    password: 123456
+  sleuth:
+    integration:
+      enabled: false
+    scheduled:
+      enabled: false
+    sampler:
+        percentage: 1.0
+  cloud:
+    stream:
+        kafka:
+          binder:
+            brokers: 127.0.0.1:9092
+            zkNodes: 127.0.0.1:2181
+        default-binder: kafka
+  kafka:
+    listener:
+      concurrency: 3
+    producer:
+      batch-size: 1000
+      retries: 0
+      buffer-memory: 33554432
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    bootstrap-servers: localhost:9092
+choerodon:
+  event:
+    store:
+        queue-type: kafka
+        publish-msg-thread-num: 5
+        query-status-thread-num: 5
+        rocketmq:
+          group-name: event-store-group
+          send-msg-timeout: 10000
+          max-message-size: 131072
+          default-producer: defaultProducer
+          transaction-producer: transactionProducer
+          instance-name: event-store
+          namesrv-addr: 127.0.0.1:9876
+mybatis:
+  mapperLocations: classpath*:/mapper/*.xml
+  configuration:
+    mapUnderscoreToCamelCase: true
+eureka:
+  instance:
+    preferIpAddress: true
+    leaseRenewalIntervalInSeconds: 10
+    leaseExpirationDurationInSeconds: 30
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8000/eureka/
+    registryFetchIntervalSeconds: 10

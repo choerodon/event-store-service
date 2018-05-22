@@ -11,10 +11,42 @@ It is necessary to cooperate with `choerodon-starter-event-producer` and `choero
 - It must be used with `choerodon-starter-event-producer` and `choerodon-starter-event-consumer` to achieve data consistency.
 
 ## Installation and Getting Started
-1. Start up `register-server`.
-2. Create the `event_store_service` database in the local mysql, execute `sh init-local-database.sh` in the project directory to initialize the data table.
-3. Start up kafka
-4.Go to the project directory and run `mvn spring-boot:run`.
+1. Start up `register-server`
+2. Start up `kafka`
+3. Create a `event_store_service` database in mysql：
+
+    ```sql
+    CREATE USER 'choerodon'@'%' IDENTIFIED BY "123456";
+    CREATE DATABASE event_store_service DEFAULT CHARACTER SET utf8;
+    GRANT ALL PRIVILEGES ON event_store_service.* TO choerodon@'%';
+    FLUSH PRIVILEGES;
+    ```
+    New file of "init-local-database.sh" in the root directory of the event-store-service project：
+    
+    ```sh
+    mkdir -p target
+    if [ ! -f target/choerodon-tool-liquibase.jar ]
+    then
+        curl http://nexus.choerodon.com.cn/repository/choerodon-release/io/choerodon/choerodon-tool-liquibase/0.5.0.RELEASE/choerodon-tool-liquibase-0.5.0.RELEASE.jar -o target/choerodon-tool-liquibase.jar
+    fi
+    java -Dspring.datasource.url="jdbc:mysql://localhost/event_store_service?useUnicode=true&characterEncoding=utf-8&useSSL=false" \
+     -Dspring.datasource.username=choerodon \
+     -Dspring.datasource.password=123456 \
+     -Ddata.drop=false -Ddata.init=true \
+     -Ddata.dir=src/main/resources \
+     -jar target/choerodon-tool-liquibase.jar
+    ```
+    
+    And executed in the root directory of the event-store-service project：
+    
+    ```sh
+    sh init-local-database.sh
+    ```
+4. Then run the project in the root directory of the project：
+
+    ```sh
+    mvn spring-boot:run
+    ```
 
 ## Usage
 - configuration

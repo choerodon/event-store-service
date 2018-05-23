@@ -1,5 +1,5 @@
-# Event-Store-Service
-`event-store-service` for data consistency support.
+# Event Store Service
+`event-store-service` is for data consistency support.
 It is necessary to cooperate with [choerodon-starter-event-producer](https://github.com/choerodon/choerodon-starters/tree/master/choerodon-starter-event-producer) and [choerodon-starter-event-consumer](https://github.com/choerodon/choerodon-starters/tree/master/choerodon-starter-event-consumer) to implement data consistency. Currently, the message queue `kafka` is supported.
 
 ## Feature
@@ -7,7 +7,7 @@ It is necessary to cooperate with [choerodon-starter-event-producer](https://git
 - `rabbitmq`, `redis`, and `rocketmq` may also be supported.
 
 ## Requirements
-- This project is an eureka client project. The local operation needs to cooperate with [eureka-server](https://github.com/choerodon/eureka-server), and the online operation needs to cooperate with [go-register-server](https://github.com/choerodon/go-register-server).
+- This service is an eureka client service. The local operation needs to cooperate with [eureka-server](https://github.com/choerodon/eureka-server), and the online operation needs to cooperate with [go-register-server](https://github.com/choerodon/go-register-server).
 - It must be used with [choerodon-starter-event-producer](https://github.com/choerodon/choerodon-starters/tree/master/choerodon-starter-event-producer) and [choerodon-starter-event-consumer](https://github.com/choerodon/choerodon-starters/tree/master/choerodon-starter-event-consumer) to achieve data consistency.
 
 ## Installation and Getting Started
@@ -37,7 +37,7 @@ It is necessary to cooperate with [choerodon-starter-event-producer](https://git
      -jar target/choerodon-tool-liquibase.jar
     ```
     
-    And executed in the root directory of the event-store-service project：
+    And executed in the root directory of the `event-store-service` project：
     
     ```sh
     sh init-local-database.sh

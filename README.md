@@ -1,56 +1,73 @@
-# event-store-service
-> event-store-service for data consistency support.
-It is necessary to cooperate with choerodon-starter-event-producer and choerodon-starter-event-consumer to implement data consistency. Currently, the message queue kafka is supported.
+# Event-Store-Service
+`event-store-service` for data consistency support.
+It is necessary to cooperate with [choerodon-starter-event-producer](https://github.com/choerodon/choerodon-starters/tree/master/choerodon-starter-event-producer) and [choerodon-starter-event-consumer](https://github.com/choerodon/choerodon-starters/tree/master/choerodon-starter-event-consumer) to implement data consistency. Currently, the message queue `kafka` is supported.
 
 ## Feature
-- Complete the front page. After the failed message is sent back to event-store-service, manually click on Retry on the page to resend the message.
-- In addition to kafka, rabbitmq, redis, and rocketmq may also be supported.
+- Complete the front page. After the failed message is sent back to `event-store-service`, manually click on Retry on the page to resend the message.
+- `rabbitmq`, `redis`, and `rocketmq` may also be supported.
 
 ## Requirements
-- This project is an eureka client project. The local operation needs to cooperate with register-server, and the online operation needs to cooperate with go-register-server.
-- It must be used with choerodon-starter-event-producer and choerodon-starter-event-consumer to achieve data consistency.
-
-## To get the code
-
-```
-git clone https://github.com/choerodon/event-store-service.git
-```
+- This project is an eureka client project. The local operation needs to cooperate with [eureka-server](https://github.com/choerodon/eureka-server), and the online operation needs to cooperate with [go-register-server](https://github.com/choerodon/go-register-server).
+- It must be used with [choerodon-starter-event-producer](https://github.com/choerodon/choerodon-starters/tree/master/choerodon-starter-event-producer) and [choerodon-starter-event-consumer](https://github.com/choerodon/choerodon-starters/tree/master/choerodon-starter-event-consumer) to achieve data consistency.
 
 ## Installation and Getting Started
-1. Start up register-server
-2.Create the event_store_service database in the local mysql, execute sh init-local-database.sh in the project directory to initialize the data table.
-3. Start up kafka
-4.Go to the project directory and run `mvn spring-boot:run` or `idea` ,`EventStore Application`.
+1. Start up [eureka-server](https://github.com/choerodon/eureka-server)
+2. Start up `kafka`
+3. Create a `event_store_service` database in mysql：
+
+    ```sql
+    CREATE USER 'choerodon'@'%' IDENTIFIED BY "123456";
+    CREATE DATABASE event_store_service DEFAULT CHARACTER SET utf8;
+    GRANT ALL PRIVILEGES ON event_store_service.* TO choerodon@'%';
+    FLUSH PRIVILEGES;
+    ```
+    New file of "init-local-database.sh" in the root directory of the event-store-service project：
+    
+    ```sh
+    mkdir -p target
+    if [ ! -f target/choerodon-tool-liquibase.jar ]
+    then
+        curl http://nexus.choerodon.com.cn/repository/choerodon-release/io/choerodon/choerodon-tool-liquibase/0.5.0.RELEASE/choerodon-tool-liquibase-0.5.0.RELEASE.jar -o target/choerodon-tool-liquibase.jar
+    fi
+    java -Dspring.datasource.url="jdbc:mysql://localhost/event_store_service?useUnicode=true&characterEncoding=utf-8&useSSL=false" \
+     -Dspring.datasource.username=choerodon \
+     -Dspring.datasource.password=123456 \
+     -Ddata.drop=false -Ddata.init=true \
+     -Ddata.dir=src/main/resources \
+     -jar target/choerodon-tool-liquibase.jar
+    ```
+    
+    And executed in the root directory of the event-store-service project：
+    
+    ```sh
+    sh init-local-database.sh
+    ```
+4. Then run the project in the root directory of the project：
+
+    ```sh
+    mvn spring-boot:run
+    ```
 
 ## Usage
-- File configuration
+- configuration
 
   ```yaml
   choerodon:
-  event:
-    store:
-        queue-type: kafka # Message Queue Type
-        publish-msg-thread-num: 5 # Number of threads sending messages to the message queue
-        query-status-thread-num: 5 # The number of threads that perform the lookup of interface 
-        rocketmq: # The related configuration of Rocketmq
-          group-name: event-store-group
-          send-msg-timeout: 10000
-          max-message-size: 131072
-          default-producer: defaultProducer
-          transaction-producer: transactionProducer
-          instance-name: event-store
-          namesrv-addr: 127.0.0.1:9876
+      event:
+        store:
+            queue-type: kafka # Message Queue Type
+            publish-msg-thread-num: 5 # Number of threads sending messages to the message queue
+            query-status-thread-num: 5 # The number of threads that perform the lookup of interface 
   ```
-- Build mirror
-
-   Pull source code to execute mvn clean install, generate app.jar in the target directory, copy it to src/main/docker directory, there are dockerfile, perform docker build as a mirror.
-- The usage of existing mirror
-
-- After creating a mirror, create a new deployment on k8s. Refer the chart directory deployment file in the code to write.
 
 ## Dependencies
-- go-register-server: Register server
-- config-server：configure server
-- kafka
-- mysql：event_store_service Database
-    
+- [go-register-server](https://github.com/choerodon/go-register-server): Register server
+- [config-server](https://github.com/choerodon/config-server)：configure server
+- `kafka`
+- `mysql`：`event_store_service` Database
+
+## Reporting Issues
+If you find any shortcomings or bugs, please describe them in the [issue](https://github.com/choerodon/choerodon/issues/new?template=issue_template.md).
+
+## How to Contribute
+Pull requests are welcome! [Follow](https://github.com/choerodon/choerodon/blob/master/CONTRIBUTING.md) to know for more information on how to contribute.

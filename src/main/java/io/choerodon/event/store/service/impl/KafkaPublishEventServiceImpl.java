@@ -23,11 +23,11 @@ public class KafkaPublishEventServiceImpl implements PublishEventService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(KafkaPublishEventServiceImpl.class);
 
-    private KafkaTemplate kafkaTemplate;
+    private KafkaTemplate<byte[], byte[]> kafkaTemplate;
     private EventSendMsgMapper messageMapper;
 
 
-    public KafkaPublishEventServiceImpl(KafkaTemplate kafkaTemplate,
+    public KafkaPublishEventServiceImpl(KafkaTemplate<byte[], byte[]> kafkaTemplate,
                                         EventSendMsgMapper messageMapper) {
         this.kafkaTemplate = kafkaTemplate;
         this.messageMapper = messageMapper;
@@ -40,7 +40,7 @@ public class KafkaPublishEventServiceImpl implements PublishEventService {
         try {
             for (int i = 0; i < eventSendMsgList.size(); i++) {
                 EventSendMsg message = eventSendMsgList.get(i);
-                kafkaTemplate.send(message.getTopic(), message.getUuid() + i, message.getPayload())
+                kafkaTemplate.send(message.getTopic(), (message.getUuid() + i).getBytes(), message.getPayload().getBytes())
                         .addCallback(new ListenableFutureCallback() {
                             @Override
                             public void onFailure(Throwable ex) {

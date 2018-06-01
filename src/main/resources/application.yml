@@ -24,8 +24,6 @@ spring:
       batch-size: 1000
       retries: 0
       buffer-memory: 33554432
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
     bootstrap-servers: localhost:9092
 choerodon:
   event:

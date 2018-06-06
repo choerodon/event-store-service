@@ -40,7 +40,7 @@ public class KafkaPublishEventServiceImpl implements PublishEventService {
         try {
             for (int i = 0; i < eventSendMsgList.size(); i++) {
                 EventSendMsg message = eventSendMsgList.get(i);
-                kafkaTemplate.send(message.getTopic(), (message.getUuid() + i).getBytes(), message.getPayload().getBytes())
+                kafkaTemplate.send(message.getTopic(), (message.getUuid() + i).getBytes(), message.getPayload().getBytes() )
                         .addCallback(new ListenableFutureCallback() {
                             @Override
                             public void onFailure(Throwable ex) {

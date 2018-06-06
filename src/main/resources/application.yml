@@ -10,6 +10,8 @@ spring:
       enabled: false
     sampler:
         percentage: 1.0
+    stream:
+          enabled: true
   cloud:
     stream:
         kafka:
@@ -17,6 +19,8 @@ spring:
             brokers: 127.0.0.1:9092
             zkNodes: 127.0.0.1:2181
         default-binder: kafka
+    bus:
+      enabled: true
   kafka:
     listener:
       concurrency: 3
@@ -28,17 +32,12 @@ spring:
 choerodon:
   event:
     store:
-        queue-type: kafka
-        publish-msg-thread-num: 5
-        query-status-thread-num: 5
-        rocketmq:
-          group-name: event-store-group
-          send-msg-timeout: 10000
-          max-message-size: 131072
-          default-producer: defaultProducer
-          transaction-producer: transactionProducer
-          instance-name: event-store
-          namesrv-addr: 127.0.0.1:9876
+        publish-msg-thread-num: 6
+        query-status-thread-num: 4
+hystrix:
+  stream:
+    queue:
+      enabled: true
 mybatis:
   mapperLocations: classpath*:/mapper/*.xml
   configuration:
@@ -52,3 +51,7 @@ eureka:
     serviceUrl:
       defaultZone: http://localhost:8000/eureka/
     registryFetchIntervalSeconds: 10
+logging:
+  level:
+    com.netflix.discovery.DiscoveryClient: warn
+

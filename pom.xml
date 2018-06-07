@@ -2,35 +2,39 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-     <parent>
+    <parent>
         <groupId>io.choerodon</groupId>
         <artifactId>choerodon-framework-parent</artifactId>
-        <version>0.5.0.RELEASE</version>
+        <version>0.6.0.RELEASE</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>event-store-service</artifactId>
 
+    <properties>
+        <choerodon.starters.version>0.5.0.RELEASE</choerodon.starters.version>
+    </properties>
+
     <dependencies>
-         <dependency>
+        <dependency>
             <groupId>io.choerodon</groupId>
             <artifactId>choerodon-starter-oauth-resource</artifactId>
-            <version>0.5.0.RELEASE</version>
+            <version>${choerodon.starters.version}</version>
         </dependency>
         <dependency>
             <groupId>io.choerodon</groupId>
             <artifactId>choerodon-starter-swagger</artifactId>
-            <version>0.5.0.RELEASE</version>
+            <version>${choerodon.starters.version}</version>
         </dependency>
-         <dependency>
+        <dependency>
             <groupId>io.choerodon</groupId>
             <artifactId>choerodon-starter-mybatis-mapper</artifactId>
-            <version>0.5.0.RELEASE</version>
+            <version>${choerodon.starters.version}</version>
         </dependency>
         <dependency>
             <groupId>io.choerodon</groupId>
             <artifactId>choerodon-starter-feign-replay</artifactId>
-            <version>0.5.0.RELEASE</version>
+            <version>${choerodon.starters.version}</version>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>
@@ -66,7 +70,7 @@
         <dependency>
             <groupId>io.choerodon</groupId>
             <artifactId>choerodon-starter-bus</artifactId>
-            <version>0.5.0.RELEASE</version>
+            <version>${choerodon.starters.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -97,7 +101,7 @@
         <dependency>
             <groupId>io.choerodon</groupId>
             <artifactId>choerodon-starter-hitoa</artifactId>
-            <version>0.5.0.RELEASE</version>
+            <version>${choerodon.starters.version}</version>
         </dependency>
         <dependency><!--如果服务需要zipkin监控功能则需要此依赖-->
             <groupId>org.springframework.cloud</groupId>

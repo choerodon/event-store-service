@@ -9,7 +9,7 @@ spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-{{ include "service.labels.standard" . | indent 6 }}
+{{ include "service.match.labels" . | indent 6 }}
   template:
     metadata:
       annotations:

@@ -3,15 +3,6 @@ spring:
     url: jdbc:mysql://localhost/event_store_service?useUnicode=true&characterEncoding=utf-8&useSSL=false
     username: choerodon
     password: 123456
-  sleuth:
-    integration:
-      enabled: false
-    scheduled:
-      enabled: false
-    sampler:
-        percentage: 1.0
-    stream:
-          enabled: true
   cloud:
     stream:
         kafka:
